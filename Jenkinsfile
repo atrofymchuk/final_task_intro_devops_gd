@@ -6,6 +6,9 @@ pipeline {
   stages {
     stage('Cloning Git') {
         steps {
+          script {
+                    properties([pipelineTriggers([pollSCM('H/5 * * * *')])])
+                }
           git branch: 'main',
                 url: 'https://github.com/atrofymchuk/spring-petclinic.git'
         }
