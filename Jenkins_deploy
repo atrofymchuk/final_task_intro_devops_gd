@@ -1,13 +1,14 @@
 def buildNumber = Jenkins.instance.getItem('Build_job').lastSuccessfulBuild.number
 pipeline {
     agent any
-    
+    parameters {
+        string defaultValue: '2.7.3-SNAPSHOT', name: 'VERSION'
+    }
     environment {
         NAME_TASK_BUILD = "build_petclinic"
         
     }
     stages {
-        
         stage('Deploy') {
             steps{
                 script{ 
