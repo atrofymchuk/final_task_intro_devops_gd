@@ -19,6 +19,10 @@ pipeline {
                       withMaven(maven: 'maven', mavenSettingsConfig: 'mvn-setting-xml') {
                       sh "mvn clean package"
                       }
+                      script {
+                      TAG_SELECTOR = readMavenPom().getVersion()
+                      }
+                      echo("TAG_SELECTOR=${TAG_SELECTOR}")
                }
      }
      stage("Zip arifact and push to Nexus") {
