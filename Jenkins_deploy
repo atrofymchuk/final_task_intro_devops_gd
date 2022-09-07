@@ -18,7 +18,7 @@ pipeline {
                    sh "docker container ls -a -q | xargs -r docker container rm"
                    sh "echo $PASSWD > ./passwd"
                    sh "cat ./passwd | docker login -u $USER --password-stdin $NEXUS_REPO_URL_DOCKER_EXT"
-                   sh "docker run -d -p 8080:80 $NEXUS_REPO_BUILD_EXT:petclinic_${params.VERSION}_build_${buildNumber}"
+                   sh "docker run -d -p 80:8080 $NEXUS_REPO_BUILD_EXT:petclinic_${params.VERSION}_build_${buildNumber}"
                    sh "rm ./passwd"   
                 }
          }
