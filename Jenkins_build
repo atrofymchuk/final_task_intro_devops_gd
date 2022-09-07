@@ -25,7 +25,7 @@ pipeline {
               steps {
                       sh 'tar czvf artifact_${BUILD_NUMBER}.tar.gz target/*.jar'
                       withCredentials([usernamePassword(credentialsId: 'nexus-user-credentials', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
-                      sh "curl -v -u $USER:$PASSWD --upload-file artifact_${BUILD_NUMBER}.tar.gz ${env.NEXUS_REPO_URL}/artifact_${BUILD_NUMBER}.tar.gz"
+                      sh "curl -v -u $USER:$PASSWD --upload-file artifact_${BUILD_NUMBER}.tar.gz ${env.NEXUS_REPO_URL_INT}/artifact_${BUILD_NUMBER}.tar.gz"
                       }
               }    
       }
