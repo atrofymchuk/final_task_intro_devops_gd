@@ -1,4 +1,3 @@
-def TAG_SELECTOR = "UNINTIALIZED"
 pipeline {
   agent any
   tools {
@@ -19,13 +18,16 @@ pipeline {
                       withMaven(maven: 'maven', mavenSettingsConfig: 'mvn-setting-xml') {
                       sh "mvn clean package"
                       }
-                      script {
-                      TAG_SELECTOR = readMavenPom().getVersion()
-                      }
-                      echo("TAG_SELECTOR=${TAG_SELECTOR}")
                }
      }
-  
+     stage('Read Pom Version'){
+       pom = readMavenPom file: 'pom.xml'
+       env.POM_VERSION = pom.version
+
+       sh '''#!/bin/bash -xe
+           echo $POM_VERSION
+       '''.stripIndent()
+    }
   }
   
 }
