@@ -20,7 +20,6 @@ pipeline {
                       pom = readMavenPom file: 'pom.xml'
                       env.POM_VERSION = pom.version
                       }
-                      sh ' echo $POM_VERSION > ./version'
                }
      }
      stage("Zip arifact and push to Nexus") {
@@ -39,10 +38,14 @@ pipeline {
       stage('Push image to Nexus') {
        steps {
            withCredentials([usernamePassword(credentialsId: 'nexus-user-credentials', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
-                      sh "echo $PASSWD > ./passwd"
-                      sh "cat ./passwd | docker login -u $USER --password-stdin $NEXUS_REPO_BUILD_EXT"
+                      //sh "echo $PASSWD > ./passwd"
+                      //sh "cat ./passwd | docker login -u $USER --password-stdin $NEXUS_REPO_BUILD_EXT"
+                      sh "(cat <<END
+                      $PASSWD
+                      END
+                      ) | docker login -u $USER --password-stdin $NEXUS_REPO_BUILD_EXT"
                       sh "docker push $NEXUS_REPO_BUILD_EXT:petclinic_${POM_VERSION}_build_${BUILD_NUMBER}"
-                      sh "rm ./passwd"
+                      //sh "rm ./passwd"
                       }
            }
        }
