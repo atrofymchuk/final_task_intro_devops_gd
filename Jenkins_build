@@ -38,7 +38,7 @@ pipeline {
        steps {
            withCredentials([usernamePassword(credentialsId: 'nexus-user-credentials', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
                       sh "echo $PASSWD > ./passwd"
-                      sh "cat ./passwd | docker login -u $USER --password-stdin $NEXUS_REPO_URL_DOCKER_INT"
+                      sh "cat ./passwd | docker login -u $USER --password-stdin $NEXUS_REPO_BUILD_EXT"
                       sh "docker push $NEXUS_REPO_BUILD_EXT:${BUILD_NUMBER}"
                       sh "rm ./passwd"
                       }
