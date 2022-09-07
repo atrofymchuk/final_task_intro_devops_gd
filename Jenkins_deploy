@@ -16,7 +16,7 @@ pipeline {
                     env.VERSION_POM = temp_var
                     echo "VERSION is: ${env.VERSION_POM}"
                     echo "BILD is: ${buildNumber}"
-                    echo "Params : ${params}"
+                    echo "Params : ${params.VERSION}"
                   }
             }
          }
