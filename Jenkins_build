@@ -50,10 +50,11 @@ pipeline {
            }
        }
        stage('Invoke deploy job') {
-       steps {
+         steps {
            script {
-                   build job: 'petclinic-deploy', parameters: [string(name: 'VERSION', value: pom.version)]  
+                   build job: 'Deployment_job', parameters: [string(name: 'VERSION', value: pom.version)]  
                }
-       }       
+         }  
+       }
    }
 }
