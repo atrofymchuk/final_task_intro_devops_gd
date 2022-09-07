@@ -20,16 +20,17 @@ pipeline {
                       sh "mvn clean package"
                       }
                       script {
-                      TAG_SELECTOR = readMavenPom().getVersion()
+                      pom = readMavenPom file: 'pom.xml'
+                      env.POM_VERSION = pom.version
                       }
-                      echo("TAG_SELECTOR=${TAG_SELECTOR}")
+                      
                }
      }
      stage("Zip arifact and push to Nexus") {
               steps {
-                      sh 'tar czvf artifact_${BUILD_NUMBER}.tar.gz target/*.jar'
+                      sh 'tar czvf petclinic_${POM_VERSION}_build_number_${BUILD_NUMBER}.tar.gz target/*.jar'
                       withCredentials([usernamePassword(credentialsId: 'nexus-user-credentials', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
-                      sh "curl -v -u $USER:$PASSWD --upload-file artifact_${BUILD_NUMBER}.tar.gz ${env.NEXUS_REPO_URL_INT}/artifact_${BUILD_NUMBER}.tar.gz"
+                      sh "curl -v -u $USER:$PASSWD --upload-file petclinic_${POM_VERSION}_build_number_${BUILD_NUMBER}.tar.gz ${env.NEXUS_REPO_URL_INT}/petclinic_${POM_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
                       }
               }    
       }
