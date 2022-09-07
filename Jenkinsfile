@@ -22,8 +22,11 @@ pipeline {
      }
      stage('Read Pom Version') {
        steps {
+         script {
             pom = readMavenPom file: 'pom.xml'
             env.POM_VERSION = pom.version
+           
+         }
 
            sh '''#!/bin/bash -xe
            echo $POM_VERSION
