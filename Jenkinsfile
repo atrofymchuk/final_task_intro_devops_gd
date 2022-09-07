@@ -20,13 +20,15 @@ pipeline {
                       }
                }
      }
-     stage('Read Pom Version'){
-       pom = readMavenPom file: 'pom.xml'
-       env.POM_VERSION = pom.version
+     stage('Read Pom Version') {
+       steps {
+            pom = readMavenPom file: 'pom.xml'
+            env.POM_VERSION = pom.version
 
-       sh '''#!/bin/bash -xe
+           sh '''#!/bin/bash -xe
            echo $POM_VERSION
-       '''.stripIndent()
+           '''.stripIndent()
+       }
     }
   }
   
