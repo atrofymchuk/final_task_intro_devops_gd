@@ -18,11 +18,11 @@ pipeline {
               steps {
                       withMaven(maven: 'maven', mavenSettingsConfig: 'mvn-setting-xml') {
                       sh "mvn clean package"
-                      archiveArtifacts output.json
                       }
                       script {
                       pom = readMavenPom file: 'pom.xml'
                       env.POM_VERSION = pom.version
+                      archiveArtifacts output.json
                       }
                       
                }
