@@ -1,0 +1,33 @@
+pipeline {
+   agent any
+  
+   tools {
+     maven 'maven'
+   }
+   stages { 
+     stage('Cloning Git') {
+        steps {
+          script {
+                    properties([pipelineTriggers([pollSCM('H/15 * * * *')])])
+                }
+          git branch: 'dev',
+                url: 'https://github.com/atrofymchuk/spring-petclinic.git'
+        }
+      }
+     stage("Build") {
+              steps {
+                      withMaven(maven: 'maven', mavenSettingsConfig: 'mvn-setting-xml') {
+                      sh "mvn clean package"
+                      }
+               }
+     }
+     stage("Zip arifact and push to Nexus") {
+              steps {
+                      sh 'tar czvf artifact_${BUILD_NUMBER}.tar.gz target/*.jar'
+                      withCredentials([usernamePassword(credentialsId: 'nexus-user-credentials', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
+                      sh "curl -v -u $USER:$PASSWD --upload-file artifact_${BUILD_NUMBER}.tar.gz ${env.NEXUS_REPO_URL}/artifact_${BUILD_NUMBER}.tar.gz"
+                      }
+              }    
+      }
+   }
+}
