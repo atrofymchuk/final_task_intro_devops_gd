@@ -22,9 +22,8 @@ pipeline {
                       script {
                       pom = readMavenPom file: 'pom.xml'
                       env.POM_VERSION = pom.version
-                      archiveArtifacts output.json
                       }
-                      
+                      sh ' echo $POM_VERSION > ./version'
                }
      }
      stage("Zip arifact and push to Nexus") {
