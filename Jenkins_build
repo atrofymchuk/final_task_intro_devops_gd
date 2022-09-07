@@ -48,6 +48,12 @@ pipeline {
                       sh "rm ./passwd"
                       }
            }
+       }
+       stage('Invoke deploy job') {
+       steps {
+           script {
+                   build job: 'petclinic-deploy', parameters: [string(name: 'VERSION', value: pom.version)]  
+               }
        }       
    }
 }
