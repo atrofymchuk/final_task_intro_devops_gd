@@ -49,7 +49,7 @@ pipeline {
        stage('Invoke deploy job') {
          steps {
            script {
-                   build job: 'Deployment_job', parameters: [string(name: 'VERSION', value: pom.version), string(name: 'BUILD_NUM', value: ${BUILD_NUMBER})]  
+                   build job: 'Deployment_job', parameters: [string(name: 'VERSION', value: pom.version), string(name: 'BUILD_NUM', value: $BUILD_NUMBER)]  
                }
          }  
        }
