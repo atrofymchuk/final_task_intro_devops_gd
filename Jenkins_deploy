@@ -1,16 +1,16 @@
-def buildNumber = Jenkins.instance.getItem('Build_job').lastSuccessfulBuild.number
 pipeline {
     agent {
      label 'app'
     }
     parameters {
-        string defaultValue: '2.7.0-SNAPSHOT', name: 'VERSION'
+        string defaultValue: '2.7.5-SNAPSHOT', name: 'VERSION'
+        string defaultValue: '', name: 'BUILD_NUM'
     }
     stages {
         stage('Deploy') {
             steps{
                 script{
-                    echo "BILD is: ${buildNumber}"
+                    echo "BUILD is: ${params.BUILD_NUM}"
                     echo "Params : ${params.VERSION}"
                   }
                 withCredentials([usernamePassword(credentialsId: 'nexus-user-credentials', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
@@ -18,7 +18,7 @@ pipeline {
                    sh "docker container ls -a -q | xargs -r docker container rm"
                    sh "echo $PASSWD > ./passwd"
                    sh "cat ./passwd | docker login -u $USER --password-stdin $NEXUS_REPO_URL_DOCKER_EXT"
-                   sh "docker run -d -p 80:8080 $NEXUS_REPO_BUILD_EXT:petclinic_${params.VERSION}_build_${buildNumber}"
+                   sh "docker run -d -p 80:8080 $NEXUS_REPO_BUILD_EXT:petclinic_${params.VERSION}_build_${params.BUILD_NUM}"
                    sh "rm ./passwd"   
                 }
          }
