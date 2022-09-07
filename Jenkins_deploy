@@ -1,0 +1,21 @@
+def buildNumber = Jenkins.instance.getItem('Build_job').lastSuccessfulBuild.number
+pipeline {
+    agent any
+    
+    environment {
+        NAME_TASK_BUILD = "build_petclinic"
+        
+    }
+    stages {
+        
+        stage('Deploy') {
+            steps{
+                script{ 
+                    temp_var = sh(script: 'cat ../${NAME_TASK_BUILD}/version', returnStdout: true).trim()
+                    env.VERSION_POM = temp_var
+                    echo "VERSION is: ${env.VERSION_POM}"
+                  }
+            }
+         }
+    }
+}
