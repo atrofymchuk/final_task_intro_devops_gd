@@ -42,10 +42,10 @@ pipeline {
                       sh "tar xzvf petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
                       sh "echo 'FROM openjdk:8' > Dockerfile"
                       sh "echo 'VOLUME /tmp' >> Dockerfile"
-                      sh "echo 'VEXPOSE 8080' >> Dockerfile"
+                      sh "echo 'EXPOSE 8080' >> Dockerfile"
                       sh '''echo "ADD target/spring-petclinic-${params.RELEASE_VERSION}.jar spring-petclinic-${params.RELEASE_VERSION}.jar" >> Dockerfile'''
-                      sh '''ENTRYPOINT ["java","-jar","/spring-petclinic-${params.RELEASE_VERSION}.jar"]'''
-                      sh "docker build -t $NEXUS_REPO_BUILD_EXT:petclinic_${params.RELEASE_VERSION}_build_${BUILD_NUMBER}."
+                      sh '''echo "ENTRYPOINT ["java","-jar","/spring-petclinic-${params.RELEASE_VERSION}.jar"] >> Dockerfile'''
+                      sh "docker build -t $NEXUS_REPO_BUILD_EXT:petclinic_${params.RELEASE_VERSION}_build_${BUILD_NUMBER} ."
                       }
               }    
       }
