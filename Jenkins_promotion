@@ -43,7 +43,7 @@ pipeline {
                       echo 'VOLUME /tmp' >> Dockerfile1
                       echo 'EXPOSE 8080' >> Dockerfile1
                       echo 'ADD target/spring-petclinic-${params.RELEASE_VERSION}.jar spring-petclinic-${params.RELEASE_VERSION}.jar' >> Dockerfile1
-                      echo 'ENTRYPOINT ["java"\,"-jar"\,"/spring-petclinic-${params.RELEASE_VERSION}.jar"]' >> Dockerfile1
+                      echo "ENTRYPOINT ['java'\,'-jar'\,'/spring-petclinic-${params.RELEASE_VERSION}.jar']" >> Dockerfile1
                       docker build -t -f Dockerfile1 $NEXUS_REPO_BUILD_EXT:petclinic_${params.RELEASE_VERSION}_build_${BUILD_NUMBER} .
                       '''
                       }
