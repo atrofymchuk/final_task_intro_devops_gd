@@ -39,12 +39,8 @@ pipeline {
                       sh '''
                       wget --user=\$USER --password=\$PASSWD ${env.NEXUS_REPO_URL_INT_RELEASE}/petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz
                       tar xzvf petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz
-                      echo 'FROM openjdk:8' > Dockerfile1
-                      echo 'VOLUME /tmp' >> Dockerfile1
-                      echo 'EXPOSE 8080' >> Dockerfile1
-                      echo 'ADD target/spring-petclinic-${params.RELEASE_VERSION}.jar spring-petclinic-${params.RELEASE_VERSION}.jar' >> Dockerfile1
-                      echo "ENTRYPOINT ['java'\,'-jar'\,'/spring-petclinic-${params.RELEASE_VERSION}.jar']" >> Dockerfile1
-                      docker build -t -f Dockerfile1 $NEXUS_REPO_BUILD_EXT:petclinic_${params.RELEASE_VERSION}_build_${BUILD_NUMBER} .
+                      sed -i -e "/app/spring-petclinic-${params.RELEASE_VERSION}/" Dockerfile
+                      docker build -t $NEXUS_REPO_BUILD_EXT:petclinic_${params.RELEASE_VERSION}_build_${BUILD_NUMBER} .
                       '''
                       }
               }    
