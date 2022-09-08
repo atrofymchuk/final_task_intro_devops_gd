@@ -39,9 +39,10 @@ pipeline {
                       withCredentials([usernamePassword(credentialsId: 'nexus-user-credentials', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
                       sh "curl -u $USER:$PASSWD --outpu petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz ${env.NEXUS_REPO_URL_EXT_RELEASE}/petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
                       sh "tar xzvf petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
-                      sh '''
-                      sed -i -e "/app/spring-petclinic-${params.RELEASE_VERSION}/" Dockerfile
-                      '''
+                      sh "mv spring-petclinic-${params.RELEASE_VERSION}.jar app.jar"
+                      //sh '''
+                      //sed -i -e "/app/spring-petclinic-${params.RELEASE_VERSION}/" Dockerfile
+                      //'''
                       //sh '''
                       //wget --user=$USER --password=$PASSWD ${env.NEXUS_REPO_URL_INT_RELEASE}/petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz
                       //tar xzvf petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz
