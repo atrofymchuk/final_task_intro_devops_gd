@@ -39,16 +39,10 @@ pipeline {
                       withCredentials([usernamePassword(credentialsId: 'nexus-user-credentials', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
                       sh "curl -u $USER:$PASSWD --outpu petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz ${env.NEXUS_REPO_URL_EXT_RELEASE}/petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
                       sh "tar xzvf petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
+                      sh "rm petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
                       sh "mv target/spring-petclinic-${params.RELEASE_VERSION}.jar target/app.jar"
-                      //sh '''
-                      //sed -i -e "/app/spring-petclinic-${params.RELEASE_VERSION}/" Dockerfile
-                      //'''
-                      //sh '''
-                      //wget --user=$USER --password=$PASSWD ${env.NEXUS_REPO_URL_INT_RELEASE}/petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz
-                      //tar xzvf petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz
-                      //sed -i -e "/app/spring-petclinic-${params.RELEASE_VERSION}/" Dockerfile
                       sh "docker build -t $NEXUS_REPO_BUILD_EXT:petclinic_${params.RELEASE_VERSION}_build_${BUILD_NUMBER} ."
-                      //'''
+                      sh "rm -rf target/"
                       }
               }    
       }
@@ -57,6 +51,7 @@ pipeline {
            withCredentials([usernamePassword(credentialsId: 'nexus-user-credentials', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
                       sh "echo $PASSWD | docker login -u $USER --password-stdin $NEXUS_REPO_BUILD_EXT"
                       sh "docker push $NEXUS_REPO_BUILD_EXT:petclinic_${params.RELEASE_VERSION}_build_${BUILD_NUMBER}"
+                      sh "docker images -q | xargs -r docker rmi"
                       }
            }
        }
