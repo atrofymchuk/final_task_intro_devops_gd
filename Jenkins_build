@@ -28,6 +28,7 @@ pipeline {
                       withCredentials([usernamePassword(credentialsId: 'nexus-user-credentials', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
                       sh "curl -v -u $USER:$PASSWD --upload-file petclinic_${POM_VERSION}_build_number_${BUILD_NUMBER}.tar.gz ${env.NEXUS_REPO_URL_INT}/petclinic_${POM_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
                       sh "rm petclinic_${POM_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
+                      sh "mvn clean"
                       }
               }    
       }
