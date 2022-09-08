@@ -38,10 +38,11 @@ pipeline {
       stage('Push image to Nexus') {
        steps {
            withCredentials([usernamePassword(credentialsId: 'nexus-user-credentials', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
-                      sh "echo $PASSWD > ./passwd"
-                      sh "cat ./passwd | docker login -u $USER --password-stdin $NEXUS_REPO_BUILD_EXT"
+                      //sh "echo $PASSWD > ./passwd"
+                      //sh "cat ./passwd | docker login -u $USER --password-stdin $NEXUS_REPO_BUILD_EXT"
+                      sh "echo $PASSWD | docker login -u $USER --password-stdin $NEXUS_REPO_BUILD_EXT"
                       sh "docker push $NEXUS_REPO_BUILD_EXT:petclinic_${POM_VERSION}_build_${BUILD_NUMBER}"
-                      sh "rm ./passwd"
+                      //sh "rm ./passwd"
                       }
            }
        }
