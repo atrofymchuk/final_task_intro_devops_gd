@@ -36,16 +36,16 @@ pipeline {
       stage("Build Docker image with released artifact ") {
               steps {
                       withCredentials([usernamePassword(credentialsId: 'nexus-user-credentials', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
-                      sh "mkdir docker_build && cd docker_build"
-                      sh "wget --user=\$USER --password=\$PASSWD ${env.NEXUS_REPO_URL_INT_RELEASE}/petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
-                      sh "pwd"
-                      sh "tar xzvf petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
-                      sh "echo 'FROM openjdk:8' > Dockerfile"
-                      sh "echo 'VOLUME /tmp' >> Dockerfile"
-                      sh "echo 'EXPOSE 8080' >> Dockerfile"
-                      sh "echo 'ADD target/spring-petclinic-${params.RELEASE_VERSION}.jar spring-petclinic-${params.RELEASE_VERSION}.jar' >> Dockerfile"
-                      sh "echo 'ENTRYPOINT ["java"\,"-jar"\,"/spring-petclinic-${params.RELEASE_VERSION}.jar"]' >> Dockerfile"
-                      sh "docker build -t $NEXUS_REPO_BUILD_EXT:petclinic_${params.RELEASE_VERSION}_build_${BUILD_NUMBER} ."
+                      sh '''
+                      wget --user=\$USER --password=\$PASSWD ${env.NEXUS_REPO_URL_INT_RELEASE}/petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz
+                      tar xzvf petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz
+                      echo 'FROM openjdk:8' > Dockerfile1
+                      echo 'VOLUME /tmp' >> Dockerfile1
+                      echo 'EXPOSE 8080' >> Dockerfile1
+                      echo 'ADD target/spring-petclinic-${params.RELEASE_VERSION}.jar spring-petclinic-${params.RELEASE_VERSION}.jar' >> Dockerfile1
+                      echo 'ENTRYPOINT ["java"\,"-jar"\,"/spring-petclinic-${params.RELEASE_VERSION}.jar"]' >> Dockerfile1
+                      docker build -t -f Dockerfile1 $NEXUS_REPO_BUILD_EXT:petclinic_${params.RELEASE_VERSION}_build_${BUILD_NUMBER} .
+                      '''
                       }
               }    
       }
