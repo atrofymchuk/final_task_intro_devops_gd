@@ -16,9 +16,11 @@ pipeline {
       }
      stage("Build") {
               steps {
-                      withMaven(maven: 'maven', mavenSettingsConfig: 'mvn-setting-xml') {
+                      withCredentials([gitUsernamePassword(credentialsId: 'at-github', gitToolName: 'Default')]) {  
+                      withMaven([maven: 'maven', mavenSettingsConfig: 'mvn-setting-xml') {
                       sh "mvn release:prepare -DreleaseVersion=${params.RELEASE_VERSION} -DdevelopmentVersion=${params.DEVELEPMENT_VERSION}"
                       sh "mvn release:perform -Darguments='-Dmaven.deploy.skip=true'"
+                      }
                       }
                }
      }
