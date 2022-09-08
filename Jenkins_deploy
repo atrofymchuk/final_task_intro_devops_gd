@@ -9,10 +9,6 @@ pipeline {
     stages {
         stage('Deploy') {
             steps{
-                script{
-                    echo "BUILD is: ${params.BUILD_NUM}"
-                    echo "Params : ${params.VERSION}"
-                  }
                 withCredentials([usernamePassword(credentialsId: 'nexus-user-credentials', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
                    sh "docker ps -q | xargs --no-run-if-empty docker container stop"
                    sh "docker container ls -a -q | xargs -r docker container rm"
