@@ -17,7 +17,7 @@ pipeline {
      stage("Build") {
               steps {
                       withMaven(maven: 'maven', mavenSettingsConfig: 'mvn-setting-xml') {
-                      sh "mvn release:prepare -DreleaseVersion=$RELEASE_VERSION -DdevelopmentVersion=$DEVELEPMENT_VERSION
+                      sh "mvn release:prepare -DreleaseVersion="${RELEASE_VERSION}" -DdevelopmentVersion="${DEVELEPMENT_VERSION}"
                       sh "mvn release:perform -Darguments="-Dmaven.deploy.skip=true" "
                       }
                }
