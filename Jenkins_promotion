@@ -30,6 +30,7 @@ pipeline {
                       withCredentials([usernamePassword(credentialsId: 'nexus-user-credentials', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
                       sh "curl -v -u $USER:$PASSWD --upload-file petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz ${env.NEXUS_REPO_URL_INT_RELEASE}/petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
                       sh "rm petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
+                      sh "mvn clean"
                       }
               }    
       }
@@ -39,8 +40,8 @@ pipeline {
                       sh '''
                       wget --user=\$USER --password=\$PASSWD ${env.NEXUS_REPO_URL_INT_RELEASE}/petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz
                       tar xzvf petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz
-                      sed -i -e "/app/spring-petclinic-${params.RELEASE_VERSION}/" Dockerfile
-                      docker build -t $NEXUS_REPO_BUILD_EXT:petclinic_${params.RELEASE_VERSION}_build_${BUILD_NUMBER} .
+                      //sed -i -e "/app/spring-petclinic-${params.RELEASE_VERSION}/" Dockerfile
+                      //docker build -t $NEXUS_REPO_BUILD_EXT:petclinic_${params.RELEASE_VERSION}_build_${BUILD_NUMBER} .
                       '''
                       }
               }    
