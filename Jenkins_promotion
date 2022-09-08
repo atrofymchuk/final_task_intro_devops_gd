@@ -41,7 +41,7 @@ pipeline {
                       sh "tar xzvf petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
                       sh "rm petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
                       sh "mv target/spring-petclinic-${params.RELEASE_VERSION}.jar target/app.jar"
-                      sh "docker build -t $NEXUS_REPO_BUILD_EXT:petclinic_${params.RELEASE_VERSION}_build_${BUILD_NUMBER} ."
+                      sh "docker build -t $NEXUS_REPO_BUILD_EXT_RELEASE:petclinic_${params.RELEASE_VERSION}_build_${BUILD_NUMBER} ."
                       sh "rm -rf target/"
                       }
               }    
