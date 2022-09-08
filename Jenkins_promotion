@@ -44,7 +44,7 @@ pipeline {
                       //tar xzvf petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz
                       //sed -i -e "/app/spring-petclinic-${params.RELEASE_VERSION}/" Dockerfile
                       //docker build -t $NEXUS_REPO_BUILD_EXT:petclinic_${params.RELEASE_VERSION}_build_${BUILD_NUMBER} .
-                      '''
+                      //'''
                       }
               }    
       }
