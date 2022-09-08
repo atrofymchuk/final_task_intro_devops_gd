@@ -27,12 +27,15 @@ pipeline {
                       sh 'tar czvf petclinic_${POM_VERSION}_build_number_${BUILD_NUMBER}.tar.gz target/*.jar'
                       withCredentials([usernamePassword(credentialsId: 'nexus-user-credentials', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
                       sh "curl -v -u $USER:$PASSWD --upload-file petclinic_${POM_VERSION}_build_number_${BUILD_NUMBER}.tar.gz ${env.NEXUS_REPO_URL_INT}/petclinic_${POM_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
+                      sh "rm petclinic_${POM_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
                       }
               }    
       }
       stage('Build Docker Image') {
            steps {
+               sh "mv target/spring-petclinic-${POM_VERSION}.jar target/app.jar"
                sh "docker build -t $NEXUS_REPO_BUILD_EXT:petclinic_${POM_VERSION}_build_${BUILD_NUMBER} ."
+               sh "rm -rf target/"
             }
       }
       stage('Push image to Nexus') {
@@ -40,6 +43,7 @@ pipeline {
            withCredentials([usernamePassword(credentialsId: 'nexus-user-credentials', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
                       sh "echo $PASSWD | docker login -u $USER --password-stdin $NEXUS_REPO_BUILD_EXT"
                       sh "docker push $NEXUS_REPO_BUILD_EXT:petclinic_${POM_VERSION}_build_${BUILD_NUMBER}"
+                      sh "docker images -q | xargs -r docker rmi"
                       }
            }
        }
