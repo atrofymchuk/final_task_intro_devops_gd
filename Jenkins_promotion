@@ -24,14 +24,39 @@ pipeline {
                       }
                }
      }
-     stage("Zip arifact and push to Nexus") {
+     stage("Zip arifact and push to the Nexus") {
               steps {
                       sh "tar czvf petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz target/*.jar"
                       withCredentials([usernamePassword(credentialsId: 'nexus-user-credentials', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
                       sh "curl -v -u $USER:$PASSWD --upload-file petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz ${env.NEXUS_REPO_URL_INT_RELEASE}/petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
+                      sh "rm petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
                       }
               }    
       }
+      stage("Build Docker image with released artifact ") {
+              steps {
+                      withCredentials([usernamePassword(credentialsId: 'nexus-user-credentials', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
+                      sh "mkdir docker_build && cd docker_build"
+                      sh "wget --user=\$USER --password=\$PASSWD ${env.NEXUS_REPO_URL_INT_RELEASE}/petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
+                      sh "pwd"
+                      sh "tar xzvf petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
+                      sh "echo 'FROM openjdk:8' > Dockerfile"
+                      sh "echo 'VOLUME /tmp' >> Dockerfile"
+                      sh "echo 'VEXPOSE 8080' >> Dockerfile"
+                      sh '''echo "ADD target/spring-petclinic-${params.RELEASE_VERSION}.jar spring-petclinic-${params.RELEASE_VERSION}.jar" >> Dockerfile'''
+                      sh '''ENTRYPOINT ["java","-jar","/spring-petclinic-${params.RELEASE_VERSION}.jar"]'''
+                      sh "docker build -t $NEXUS_REPO_BUILD_EXT:petclinic_${params.RELEASE_VERSION}_build_${BUILD_NUMBER}."
+                      }
+              }    
+      }
+      stage('Push image to the Nexus') {
+       steps {
+           withCredentials([usernamePassword(credentialsId: 'nexus-user-credentials', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
+                      sh "echo $PASSWD | docker login -u $USER --password-stdin $NEXUS_REPO_BUILD_EXT"
+                      sh "docker push $NEXUS_REPO_BUILD_EXT:petclinic_${params.RELEASE_VERSION}_build_${BUILD_NUMBER}"
+                      }
+           }
+       }
       
    }
 }
