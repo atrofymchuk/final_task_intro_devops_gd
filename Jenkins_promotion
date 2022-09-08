@@ -26,9 +26,9 @@ pipeline {
      }
      stage("Zip arifact and push to Nexus") {
               steps {
-                      sh 'tar czvf petclinic_${RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz target/*.jar'
+                      sh "tar czvf petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz target/*.jar"
                       withCredentials([usernamePassword(credentialsId: 'nexus-user-credentials', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
-                      sh "curl -v -u $USER:$PASSWD --upload-file petclinic_${RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz ${env.NEXUS_REPO_URL_INT_RELEASE}/petclinic_${RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
+                      sh "curl -v -u $USER:$PASSWD --upload-file petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz ${env.NEXUS_REPO_URL_INT_RELEASE}/petclinic_${params.RELEASE_VERSION}_build_number_${BUILD_NUMBER}.tar.gz"
                       }
               }    
       }
