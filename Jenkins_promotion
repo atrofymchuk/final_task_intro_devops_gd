@@ -49,8 +49,8 @@ pipeline {
       stage('Push image to the Nexus') {
        steps {
            withCredentials([usernamePassword(credentialsId: 'nexus-user-credentials', passwordVariable: 'PASSWD', usernameVariable: 'USER')]) {
-                      sh "echo $PASSWD | docker login -u $USER --password-stdin $NEXUS_REPO_BUILD_EXT"
-                      sh "docker push $NEXUS_REPO_BUILD_EXT:petclinic_${params.RELEASE_VERSION}_build_${BUILD_NUMBER}"
+                      sh "echo $PASSWD | docker login -u $USER --password-stdin $NEXUS_REPO_BUILD_EXT_RELEASE"
+                      sh "docker push $NEXUS_REPO_BUILD_EXT_RELEASE:petclinic_${params.RELEASE_VERSION}_build_${BUILD_NUMBER}"
                       sh "docker images -q | xargs -r docker rmi"
                       }
            }
