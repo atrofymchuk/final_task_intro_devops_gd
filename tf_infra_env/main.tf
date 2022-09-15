@@ -97,6 +97,7 @@ resource "google_compute_instance" "vm_instance_nexus" {
     initialize_params {
       image = var.image_type
       type  = "pd-ssd"
+      size = "100"
     }
   }
   network_interface {
