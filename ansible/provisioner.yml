@@ -1,8 +1,0 @@
----
-  - hosts: jenkins
-    roles: 
-      - jenkins
-      - docker
-  - hosts: nexus
-    roles:
-      - nexus
