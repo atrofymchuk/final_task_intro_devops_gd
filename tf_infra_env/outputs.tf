@@ -1,7 +1,4 @@
-output "load_balancer_ip_address" {
-  description = "IP address of the Load Balancer"
-  value       = google_compute_address.ip_address.address
-}
+
 output "bastion_ip_address" {
   description = "IP address of the bastion"
   value       = google_compute_instance.vm_instance_bastion.network_interface.0.access_config.0.nat_ip
