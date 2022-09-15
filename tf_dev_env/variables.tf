@@ -71,15 +71,15 @@ variable "ip_cidr_range" {
 }
 
 variable "source_range_determined" {
- description = "Please Enter ip source range address determined by you"
+ description = "Please Enter ip source range address determined by you to access to ssh"
  type        = list
- default     = ["45.152.73.81", "45.152.74.95", "35.205.204.74", "194.44.67.36"]
+ default     = ["45.152.73.81", "45.152.74.95", "35.205.204.74", "194.44.67.36", "35.205.69.158"]
 }
 
 variable "source_range_all" {
  description = "Please Enter ip source range address for other"
  type        = list
- default     = ["0.0.0.0"]
+ default     = ["0.0.0.0/0"]
 }
 
 variable "port_ssh" {
@@ -91,5 +91,5 @@ variable "port_ssh" {
 variable "port_app" {
  description = "Please Enter ip source range address"
  type        = list
- default     = ["8080"]
+ default     = ["80","8080"]
 }
