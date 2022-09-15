@@ -1,0 +1,5 @@
+---
+user: 'atrofymchuk'
+repo_url_nexus: "35.241.187.4:8082"
+repo_url_nexus2: "35.241.187.4:8083"
+template_name: 'daemon.json.j2'

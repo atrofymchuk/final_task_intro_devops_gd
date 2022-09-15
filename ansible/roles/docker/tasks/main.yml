@@ -1,0 +1,45 @@
+---
+  - name: Add Docker GPG apt Key
+    become: true
+    shell: 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -'
+
+  - name: Add Docker Repository
+    become: true
+    apt_repository:
+      repo: 'deb https://download.docker.com/linux/ubuntu focal stable'
+      state: present
+
+  - name: Updating apt packages
+    become: true
+    ansible.builtin.apt: 
+      name: "*"
+      state: latest
+      update_cache: yes
+
+  - name: Install docker and another packages
+    become: true
+    ansible.builtin.apt: 
+      name: "{{ item }}"
+      state: present
+    loop:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+      - docker-ce
+
+  - name: Add user to docker group
+    become: true
+    shell: 'usermod -aG docker {{user}}'
+
+  - name: Create sql script
+    become: true
+    template:
+      src:  "{{ template_name }}"
+      dest: /etc/docker/daemon.json
+
+  - name: Just force systemd to restart
+    become: true
+    ansible.builtin.systemd:
+      name: docker
+      state: restarted

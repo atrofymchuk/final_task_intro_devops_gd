@@ -1,0 +1,5 @@
+---
+  - hosts: app
+    roles:
+      - deploy_app
+      - docker
