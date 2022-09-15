@@ -44,13 +44,13 @@ resource "google_compute_firewall" "private_web_1" {
   target_tags   = [format("%s-allow-inside-tcp-8081", var.name_env)]
 }
 
-resource "google_compute_firewall" "private_web_3" {
-  name    = format("%s-allow-inside-tcp-8082", var.name_env)
-  network = google_compute_network.vpc_network.name
-  allow {
-    protocol = "tcp"
-    ports    = var.port_nexus_2
-  }
-  source_ranges = var.source_range_all
-  target_tags   = [format("%s-allow-inside-tcp-8082", var.name_env)]
-}
+#resource "google_compute_firewall" "private_web_3" {
+#  name    = format("%s-allow-inside-tcp-8082", var.name_env)
+#  network = google_compute_network.vpc_network.name
+#  allow {
+#    protocol = "tcp"
+#    ports    = var.port_nexus_2
+#  }
+#  source_ranges = var.source_range_all
+#  target_tags   = [format("%s-allow-inside-tcp-8082", var.name_env)]
+#}
