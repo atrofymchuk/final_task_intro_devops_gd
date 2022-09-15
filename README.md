@@ -48,4 +48,20 @@ Create Jenkins jobs which do the following:
 - upload artifact(s) to Nexus (release repository);
 - Build Docker image with released artifact (pulls proper version from Nexus release repo). Tag it like: petclinic:release-artifact-version (e.g. petclinic:1.0.0) and push it to Nexus Docker release registry.
 
-
+## Solution
+Project implementing in GPC.
+By Terraform I created infrastructure in GCP.
+For provisioning Jenkins and Nexus I used Ansible and file ```provisioner_infra.yml```
+For provisioning App (slave Jenkins) I used Ansible and file ```provisioner_app.yml```
+Inventory file ```inventory_dev``` for App instance (slave Jenkins) and inventory file ```inventory_infra```  for Nexus and Jenkins built automaticly by Terraform.
+For ran provisioning App instance I run command ```ansible-playbook -i inventory_dev provisioner_app.yml```
+For ran provisioning Nexus and Jenkins I run command ```ansible-playbook -i inventory_infra provisioner_infra.yml```
+## PreCommit job:
+PreCommit job implemented by Jenkins in file ```Jenkinsfile.precommit```
+For watching changes being pushed to review to any branch I set up webhook from github to Jenkins.
+## Build job:
+Build job implemented by Jenkins in file ```Jenkinsfile.build```
+## Deployment job:
+Deployment job implemented by Jenkins in file ```Jenkinsfile.deployment```
+## Promotion job:
+Promotion job implemented by Jenkins in file ```Jenkinsfile.promotion```
