@@ -50,18 +50,43 @@ Create Jenkins jobs which do the following:
 
 ## Solution
 Project implementing in GPC.
+
+Architecture diagram:
+![Architecture diagram](https://github.com/atrofymchuk/final_task_intro_devops/blob/main/diagrams/Into_to_DevOps_Architecture_diagram.drawio.png)
+
 By Terraform I created infrastructure in GCP.
-For provisioning Jenkins and Nexus I used Ansible and file ```provisioner_infra.yml```
-For provisioning App (slave Jenkins) I used Ansible and file ```provisioner_app.yml```
-Inventory file ```inventory_dev``` for App instance (slave Jenkins) and inventory file ```inventory_infra```  for Nexus and Jenkins built automaticly by Terraform.
-For ran provisioning App instance I run command ```ansible-playbook -i inventory_dev provisioner_app.yml```
-For ran provisioning Nexus and Jenkins I run command ```ansible-playbook -i inventory_infra provisioner_infra.yml```
+
+This folder [tf_infra_env](https://github.com/atrofymchuk/final_task_intro_devops/tree/main/tf_infra_env) for create Nexus and Jenkins instances.
+
+This folder [tf_dev_env](https://github.com/atrofymchuk/final_task_intro_devops/tree/main/tf_dev_env) for create app instance.
+
+Infrastructure diagram:
+
+![Infrastructure diagram](https://github.com/atrofymchuk/final_task_intro_devops/blob/main/diagrams/Into_to_Devops_Infrastructure_diagram_final_task.drawio.png)
+
+For provisioning Jenkins and Nexus I used Ansible roles and playbook for provisioning [provisioner_infra.yml](https://github.com/atrofymchuk/final_task_intro_devops/blob/main/ansible/provisioner_infra.yml)
+
+For provisioning App (slave Jenkins) I used Ansible roles and playbook for provisioning [provisioner_app.yml](https://github.com/atrofymchuk/final_task_intro_devops/blob/main/ansible/provisioner_app.yml)
+
+Inventory file ```inventory_dev``` for App instance (slave Jenkins) and inventory file ```inventory_infra```  for Nexus and Jenkins built automaticly by Terraform but they don't host in Github.
+
+For provisioning App instance I run command ```ansible-playbook -i inventory_dev provisioner_app.yml```
+
+For provisioning Nexus and Jenkins I run command ```ansible-playbook -i inventory_infra provisioner_infra.yml```
+
 ## PreCommit job:
-PreCommit job implemented by Jenkins in file ```Jenkinsfile.precommit```
+
+PreCommit job implemented by Jenkins in file [Jenkinsfile.precommit](https://github.com/atrofymchuk/final_task_intro_devops/blob/main/Jenkins/Jenkinsfile.precommit)
+
 For watching changes being pushed to review to any branch I set up webhook from github to Jenkins.
+
 ## Build job:
-Build job implemented by Jenkins in file ```Jenkinsfile.build```
+
+Build job implemented by Jenkins in file [Jenkinsfile.build](https://github.com/atrofymchuk/final_task_intro_devops/blob/main/Jenkins/Jenkinsfile.build)
+
 ## Deployment job:
-Deployment job implemented by Jenkins in file ```Jenkinsfile.deployment```
+
+Deployment job implemented by Jenkins in file [Jenkinsfile.deployment](https://github.com/atrofymchuk/final_task_intro_devops/blob/main/Jenkins/Jenkinsfile.deployment)
+
 ## Promotion job:
-Promotion job implemented by Jenkins in file ```Jenkinsfile.promotion```
+Promotion job implemented by Jenkins in file [Jenkinsfile.promotion](https://github.com/atrofymchuk/final_task_intro_devops/blob/main/Jenkins/Jenkinsfile.promotion)
