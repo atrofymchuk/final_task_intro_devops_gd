@@ -49,6 +49,8 @@ Create Jenkins jobs which do the following:
 - Build Docker image with released artifact (pulls proper version from Nexus release repo). Tag it like: petclinic:release-artifact-version (e.g. petclinic:1.0.0) and push it to Nexus Docker release registry.
 
 ## Solution
+Application: [PetClinic](https://github.com/atrofymchuk/spring-petclinic)
+
 Project implementing in GPC.
 
 Architecture diagram:
