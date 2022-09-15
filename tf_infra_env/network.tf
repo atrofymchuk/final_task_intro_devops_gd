@@ -20,4 +20,3 @@ resource "google_compute_subnetwork" "private_subnetwork" {
   region        = var.region
   network       = google_compute_network.vpc_network.name
 }
-
