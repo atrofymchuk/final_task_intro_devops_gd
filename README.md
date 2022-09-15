@@ -10,14 +10,11 @@ Build CI/CD solution for Java project that is built by Maven.
 
 Jenkins master, Jenkins slave instance and Nexus should be provisioned by Ansible roles.
 
-
 Create Nexus proxy for Maven, Maven release and snapshot repos. Set Maven repo in Jenkins (Maven plugin settings). Create two Docker registries: first for snapshot versions, second for release. Release registry should avoid redeploys (versions should be unique)
-
 
 Application: PetClinic (https://github.com/spring-projects/spring-petclinic), which is hosted on GitHub. Use default settings for the database (by default it uses an in-memory database).  
 
 Fork PetClinic repo before start working.
-
 
 Create Jenkins jobs which do the following:
 

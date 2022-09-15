@@ -46,24 +46,6 @@ variable "name_env" {
   default     = "at-app"
 }
 
-variable "port_range" {
-  description = "Please Enter range port"
-  type        = string
-  default     = "80"
-}
-
-variable "ip_address" {
-  description = "Please Enter ip address"
-  type        = string
-  default     = ""
-}
-
-variable "status" {
-  description = "Please Enter status of instances 'RUNNING' or 'TERMINATED'"
-  type        = string
-  default     = "RUNNING"
-}
-
 variable "ip_cidr_range" {
   description = "Please Enter ip cidr range address"
   type        = string
@@ -83,13 +65,13 @@ variable "source_range_all" {
 }
 
 variable "port_ssh" {
- description = "Please Enter ip source range address"
+ description = "Please Enter ip source range port for ssh"
  type        = list
  default     = ["22"]
 }
 
 variable "port_app" {
- description = "Please Enter ip source range address"
+ description = "Please Enter ip source range port for app"
  type        = list
- default     = ["80","8080"]
+ default     = ["80"]
 }
