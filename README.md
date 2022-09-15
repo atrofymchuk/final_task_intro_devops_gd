@@ -1,1 +1,54 @@
-# final_task_intro_devops
+## Final project description. Intro to DevOps
+
+Build CI/CD solution for Java project that is built by Maven.
+
+## Release part, components:
+
+- Jenkins 2.x with Pipeline plugin, Git, Docker and Nexus integration
+- Nexus 3 OSS, as Maven artifact repository and Docker registry
+- Github
+
+Jenkins master, Jenkins slave instance and Nexus should be provisioned by Ansible roles.
+
+
+Create Nexus proxy for Maven, Maven release and snapshot repos. Set Maven repo in Jenkins (Maven plugin settings). Create two Docker registries: first for snapshot versions, second for release. Release registry should avoid redeploys (versions should be unique)
+
+
+Application: PetClinic (https://github.com/spring-projects/spring-petclinic), which is hosted on GitHub. Use default settings for the database (by default it uses an in-memory database).  
+
+Fork PetClinic repo before start working.
+
+
+Create Jenkins jobs which do the following:
+
+## PreCommit job:
+
+- watch for changes being pushed to review to any branch;
+- build project with Maven, including unit tests (if any);
+- should NOT upload artifacts to Nexus.
+ 
+
+## Build job:
+
+- watch for updates on "dev" branch;
+- build project with Maven, including unit tests (if any);
+- on successful build:
+- upload artifacts to Nexus (snapshots repository);
+- build Docker image with snapshot artifact and upload it to Nexus Docker  snapshot registry. Tag image like: petclinic:artifact-version (e.g petclinic:1.0.0-SNAPSHOT).
+
+## Deployment job:
+
+- triggers by Build job;
+- receive artifact version as parameter from Build job;
+- run Docker container on the slave instance. Make sure that you are able to open the PetClinic start page on 80 port.
+
+## Promotion job:
+
+- triggers manually;
+- take project version as input parameter;
+- Maven should perform "release:perform";
+- change project version to release one;
+- upload artifact(s) to Nexus (release repository);
+- Build Docker image with released artifact (pulls proper version from Nexus release repo). Tag it like: petclinic:release-artifact-version (e.g. petclinic:1.0.0) and push it to Nexus Docker release registry.
+
+
