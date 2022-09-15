@@ -90,13 +90,13 @@ variable "type_of_address" {
 variable "source_range_determined" {
  description = "Please Enter ip source range address determined by you"
  type        = list
- default     = ["45.152.73.81", "45.152.74.95", "45.152.73.81", "194.44.67.36"]
+ default     = ["45.152.73.81", "45.152.74.95", "45.152.73.81", "194.44.67.36", "45.152.74.147"]
 }
 
 variable "source_range_all" {
  description = "Please Enter ip source range address for other"
  type        = list
- default     = ["0.0.0.0"]
+ default     = ["0.0.0.0/0"]
 }
 
 variable "port_ssh" {
@@ -114,11 +114,11 @@ variable "port_jenkins" {
 variable "port_nexus_1" {
  description = "Please Enter ip source range address"
  type        = list
- default     = ["8081"]
+ default     = ["8081", "8082", "8083"]
 }
 
-variable "port_nexus_2" {
- description = "Please Enter ip source range address"
- type        = list
- default     = ["8082"]
-}
+#variable "port_nexus_2" {
+# description = "Please Enter ip source range address"
+# type        = list
+# default     = ["8082"]
+#}
