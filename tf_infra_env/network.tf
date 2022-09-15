@@ -21,9 +21,3 @@ resource "google_compute_subnetwork" "private_subnetwork" {
   network       = google_compute_network.vpc_network.name
 }
 
-resource "google_compute_address" "ip_address" {
-  name = format("%s-public-ip-lb", var.name_env)
-  project       = var.project_name
-  address_type  = var.type_of_address
-  region        = var.region
-}
